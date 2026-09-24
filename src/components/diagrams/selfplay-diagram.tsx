@@ -39,7 +39,7 @@ const edges: { d: string; label?: string; lx?: number; ly?: number; active: numb
   { d: `M344 228 L${176 + W + 2} 228`, active: [6] },
   { d: `M238 200 L238 88`, label: "r_inject(s)", lx: 244, ly: 150, active: [6] },
   { d: `M176 228 L${8 + W + 2} 228`, label: "失败", lx: 144, ly: 222, active: [7] },
-  { d: `M70 256 C 70 300, 406 300, 406 258`, label: "再次修复", lx: 238, ly: 292, active: [7] },
+  { d: `M70 256 C 70 300, 406 300, 406 258`, label: "再次修复", lx: 238, ly: 308, active: [7] },
 ]
 
 function RewardCurve() {
@@ -53,7 +53,7 @@ function RewardCurve() {
   const line = `M${px(0.0001)} ${py(1 - (1 + alpha) * 0.0001)} L${px(0.9999)} ${py(1 - (1 + alpha) * 0.9999)}`
 
   return (
-    <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:items-center">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:items-center">
       <svg viewBox={`0 0 ${w} ${h}`} className="w-full">
         <line x1={px(0)} x2={px(1)} y1={py(0)} y2={py(0)} stroke="#d4d4d8" />
         <line x1={px(0)} x2={px(0)} y1={py(1)} y2={py(-1)} stroke="#d4d4d8" />
@@ -63,9 +63,9 @@ function RewardCurve() {
         {[0, 0.5, 1].map((v) => (
           <text key={v} x={px(v)} y={h - 2} textAnchor="middle" className="fill-muted-foreground text-[9px]">{v}</text>
         ))}
-        <text x={px(1)} y={py(0) - 4} textAnchor="end" className="fill-muted-foreground text-[9px]">解决率 s</text>
+        <text x={px(1)} y={py(0) + 12} textAnchor="end" className="fill-muted-foreground text-[9px]">解决率 s</text>
         <path d={`M${px(0)} ${py(-1)} L${px(1)} ${py(1)}`} stroke="#a1a1aa" strokeDasharray="4 3" />
-        <text x={px(0.86)} y={py(0.72) - 6} className="fill-zinc-500 text-[9px]">E[r_solve]=2s−1</text>
+        <text x={px(0.22)} y={py(-0.72)} className="fill-zinc-500 text-[9px]">E[r_solve] = 2s−1</text>
         <path d={line} stroke="#6366f1" strokeWidth={2.2} fill="none" />
         <circle cx={px(0)} cy={py(-alpha)} r={3.5} fill="#6366f1" />
         <circle cx={px(1)} cy={py(-alpha)} r={3.5} fill="#6366f1" />
@@ -73,7 +73,7 @@ function RewardCurve() {
         <line x1={px(s)} x2={px(s)} y1={py(1)} y2={py(-1)} stroke="#6366f1" strokeOpacity={0.25} />
         <circle cx={px(s)} cy={py(rInject(s))} r={5} fill="#6366f1" />
         <circle cx={px(s)} cy={py(2 * s - 1)} r={4} fill="#a1a1aa" />
-        <text x={px(0.06)} y={py(1) + 12} className="fill-indigo-600 text-[9.5px] font-semibold">r_inject</text>
+        <text x={px(0.2)} y={py(1) + 4} className="fill-indigo-600 text-[9.5px] font-semibold">r_inject</text>
       </svg>
       <div className="flex flex-col gap-3 text-xs">
         <label className="flex flex-col gap-1">
@@ -112,7 +112,7 @@ export function SelfPlayDiagram() {
   return (
     <DiagramFrame title="图 7 · Self-play SWE-RL：一个模型，两个角色" hint="逐步走完一轮自博弈">
       <div className="overflow-x-auto">
-        <svg viewBox="0 0 650 305" className="min-w-[560px] w-full">
+        <svg viewBox="0 0 650 316" className="min-w-[560px] w-full">
           <defs>
             <marker id="sp-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
               <path d="M0,0 L10,5 L0,10 z" fill="currentColor" />

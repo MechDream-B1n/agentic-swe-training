@@ -59,7 +59,7 @@ export function CodeActDiagram() {
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
         <ol className="flex max-h-[380px] flex-col gap-2 overflow-y-auto pr-1">
           {turns.map((t, i) => (
             <li

@@ -52,7 +52,7 @@ function SweSmithPanel() {
   const s = strategies.find((x) => x.id === sid)!
   const maxTasks = 50
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
       <div>
         <svg viewBox="0 0 440 120" className="mb-3 w-full">
           <defs>
@@ -73,9 +73,9 @@ function SweSmithPanel() {
               {i < 3 && <path d={`M${(x as number) + 100} 54 L${(x as number) + 112} 54`} stroke="#f59e0b" strokeWidth={1.6} markerEnd="url(#sm-arrow)" />}
             </g>
           ))}
-          <path d="M272 78 L272 104 L180 104" stroke="#a1a1aa" strokeWidth={1.2} strokeDasharray="3 3" fill="none" />
-          <text x="276" y="100" className="fill-muted-foreground text-[9.5px]">否 → 丢弃</text>
-          <text x="276" y="22" className="fill-muted-foreground text-[9.5px]">是 ↓ 保留</text>
+          <path d="M272 78 L272 96" stroke="#a1a1aa" strokeWidth={1.2} strokeDasharray="3 3" />
+          <text x="272" y="110" textAnchor="middle" className="fill-muted-foreground text-[9.5px]">否 → 丢弃</text>
+          <text x="330" y="46" textAnchor="middle" className="fill-muted-foreground text-[9.5px]">是</text>
         </svg>
         <div className="mb-3 flex flex-wrap gap-2">
           {strategies.map((x) => (

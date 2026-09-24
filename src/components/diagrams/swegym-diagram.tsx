@@ -9,7 +9,7 @@ type Node = { id: string; x: number; y: number; w: number; title: string; sub: s
 const nodes: Node[] = [
   { id: "task", x: 10, y: 20, w: 120, title: "真实任务", sub: "2,438 个 · 11 仓库", detail: "每个实例 = 某个 commit 的代码库 + 人类写的 GitHub issue + 用来判定修复的单元测试（Fail→Pass / Pass→Pass）。" },
   { id: "env", x: 10, y: 120, w: 120, title: "可执行环境", sub: "每任务一个 Docker", detail: "预装好依赖，agent 可以在里面随便运行代码和测试。这是“能训练”的前提，也是最贵的部分（总计约 6TB 镜像）。" },
-  { id: "rollout", x: 175, y: 70, w: 130, title: "强模型采样轨迹", sub: "OpenHands + GPT-4o / Claude", detail: "用 OpenHands 的 CodeActAgent 脚手架，让闭源强模型在环境中多轮交互，产生大量候选轨迹。" },
+  { id: "rollout", x: 175, y: 70, w: 130, title: "强模型采样轨迹", sub: "OpenHands · 闭源强模型", detail: "用 OpenHands 的 CodeActAgent 脚手架，让闭源强模型在环境中多轮交互，产生大量候选轨迹。" },
   { id: "filter", x: 350, y: 70, w: 120, title: "测试过滤", sub: "保留 491 条成功", detail: "运行隐藏的单元测试：通过即成功轨迹。这一步把“可执行测试”变成了自动标注器，也就是拒绝采样。" },
   { id: "sft", x: 515, y: 20, w: 130, title: "SFT 策略模型", sub: "Qwen2.5-Coder-32B", detail: "用成功轨迹做监督微调（Rejection Sampling Fine-Tuning），学习完整的多轮行为：定位、复现、编辑、验证、提交。" },
   { id: "verifier", x: 515, y: 120, w: 130, title: "Verifier（ORM）", sub: "成功/失败轨迹训练", detail: "同时利用成功与失败的轨迹训练一个结果奖励模型，输入整条轨迹，输出成功概率。" },

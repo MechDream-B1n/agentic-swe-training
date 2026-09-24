@@ -71,7 +71,7 @@ export function AciDiagram() {
 
   return (
     <DiagramFrame title="图 1 · Agent-Computer Interface 中的一条轨迹" hint="逐步查看 Thought → Action → Observation">
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]">
         <svg viewBox="0 0 340 300" className="w-full">
           <defs>
             <marker id="aci-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -113,7 +113,7 @@ export function AciDiagram() {
                     x={65 + i * 54}
                     y={163}
                     textAnchor="middle"
-                    className={cn("text-[9px] font-mono", active ? "fill-white" : "fill-zinc-500")}
+                    className={cn("text-[8px] font-mono", active ? "fill-white" : "fill-zinc-500")}
                   >
                     {label}
                   </text>

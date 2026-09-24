@@ -22,7 +22,7 @@ const W = 640
 const H = 360
 const L = 104
 const B = 44
-const px = (x: number) => L + 30 + x * ((W - L - 60) / 4)
+const px = (x: number) => L + 30 + x * ((W - L - 100) / 4)
 const py = (y: number) => H - B - 30 - y * ((H - B - 70) / 3)
 
 export function ParadigmMap() {
@@ -35,7 +35,7 @@ export function ParadigmMap() {
 
   return (
     <DiagramFrame title="范式地图 · 两条轴上的迁移" hint="横轴：学习信号从哪来　纵轴：训练任务从哪来">
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-center">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-center">
         <div className="overflow-x-auto">
           <svg viewBox={`0 0 ${W} ${H}`} className="min-w-[480px] w-full">
             {ys.map((y, i) => (
@@ -56,7 +56,7 @@ export function ParadigmMap() {
               return (
                 <g key={p.label} onMouseEnter={() => setHover(i)} onClick={() => setHover(i)} className="cursor-pointer">
                   <circle cx={cx} cy={cy} r={on ? 11 : 8} fill={s.color} stroke="#fff" strokeWidth={2.5} className="transition-all" />
-                  <text x={cx} y={cy - 15} textAnchor="middle" className="fill-foreground text-[11px] font-semibold" style={{ paintOrder: "stroke", stroke: "#fff", strokeWidth: 4 }}>
+                  <text x={cx} y={cy - 15} textAnchor={p.x === 4 ? "end" : "middle"} dx={p.x === 4 ? 10 : 0} className="fill-foreground text-[11px] font-semibold" style={{ paintOrder: "stroke", stroke: "#fff", strokeWidth: 4 }}>
                     {p.label}
                   </text>
                 </g>

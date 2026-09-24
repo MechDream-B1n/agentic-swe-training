@@ -49,6 +49,8 @@ function reward(pred: string) {
   return { r: sequenceRatio(pred, ORACLE), formatOk: true }
 }
 
+const nearReward = sequenceRatio(presets[2].text, ORACLE)
+
 export function SweRlDiagram() {
   const [pred, setPred] = useState(presets[1].text)
   const [presetId, setPresetId] = useState<string | null>("alt")
@@ -86,7 +88,7 @@ export function SweRlDiagram() {
         </svg>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="flex min-w-0 flex-col">
           <div className="mb-1.5 text-xs font-medium text-muted-foreground">Oracle 补丁（来自真实 PR）</div>
           <pre className="flex-1 overflow-x-auto rounded-lg bg-zinc-950 p-3 font-mono text-[11.5px] leading-relaxed text-zinc-200">{ORACLE}</pre>
@@ -140,7 +142,7 @@ export function SweRlDiagram() {
               : preset && !preset.correct
                 ? "文本几乎一样，奖励很高，但这个补丁是错的：相似度奖励没法判断语义。"
                 : preset?.id === "alt"
-                  ? "功能上完全正确，但写法不同，奖励明显变低：这就是相似度奖励的主要局限。"
+                  ? `功能上完全正确，但因为写法不同，奖励 ${r.toFixed(2)} 反而低于“只差一个词，但是错的”补丁（${nearReward.toFixed(2)}）。这就是相似度奖励的主要局限。`
                   : "difflib.SequenceMatcher 字符级相似度，范围 0–1（本页用 TypeScript 复刻了该算法）。"}
           </p>
         </div>

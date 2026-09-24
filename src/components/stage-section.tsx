@@ -26,7 +26,7 @@ export function StageSection({ stage, children }: { stage: Stage; children: Reac
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
         <div className="flex flex-col gap-5">
           <div>
             <h3 className="mb-2 text-sm font-semibold">它要解决什么问题</h3>
