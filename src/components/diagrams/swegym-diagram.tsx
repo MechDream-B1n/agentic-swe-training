@@ -7,12 +7,12 @@ import { cn } from "@/lib/utils"
 type Node = { id: string; x: number; y: number; w: number; title: string; sub: string; detail: string }
 
 const nodes: Node[] = [
-  { id: "task", x: 10, y: 20, w: 120, title: "真实任务", sub: "2,438 个 · 11 仓库", detail: "每个实例 = 某个 commit 的代码库 + 人类写的 GitHub issue + 用来判定修复的单元测试（Fail→Pass / Pass→Pass）。" },
-  { id: "env", x: 10, y: 120, w: 120, title: "可执行环境", sub: "每任务一个 Docker", detail: "预装好依赖，agent 可以在里面随便运行代码和测试。这是“能训练”的前提，也是最贵的部分（总计约 6TB 镜像）。" },
-  { id: "rollout", x: 175, y: 70, w: 130, title: "强模型采样轨迹", sub: "OpenHands · 闭源强模型", detail: "用 OpenHands 的 CodeActAgent 脚手架，让闭源强模型在环境中多轮交互，产生大量候选轨迹。" },
-  { id: "filter", x: 350, y: 70, w: 120, title: "测试过滤", sub: "保留 491 条成功", detail: "运行隐藏的单元测试：通过即成功轨迹。这一步把“可执行测试”变成了自动标注器，也就是拒绝采样。" },
-  { id: "sft", x: 515, y: 20, w: 130, title: "SFT 策略模型", sub: "Qwen2.5-Coder-32B", detail: "用成功轨迹做监督微调（Rejection Sampling Fine-Tuning），学习完整的多轮行为：定位、复现、编辑、验证、提交。" },
-  { id: "verifier", x: 515, y: 120, w: 130, title: "Verifier（ORM）", sub: "成功/失败轨迹训练", detail: "同时利用成功与失败的轨迹训练一个结果奖励模型，输入整条轨迹，输出成功概率。" },
+  { id: "task", x: 10, y: 20, w: 120, title: "真实任务", sub: "2,438 道 · 11 仓库", detail: "每题和 SWE-bench 同构：真实 GitHub issue，仓库停在修复前，交一份补丁。仓库刻意避开 SWE-bench 的 12 个测试仓库。这些测试只在训练时当 0/1 奖励，对外报分仍要拿到 SWE-bench 上再考一次。" },
+  { id: "env", x: 10, y: 120, w: 120, title: "可执行环境", sub: "每题一个容器", detail: "预装依赖，agent 可以在里面跑命令和测试。SWE-bench 早期训练集没有这种环境和成功信号，只能模仿金补丁。这也是最贵的部分，镜像总计约 6TB。" },
+  { id: "rollout", x: 175, y: 70, w: 130, title: "教师滚轨迹", sub: "CodeActAgent 2.1", detail: "OpenHands 里的通用 ReAct，不是写死的「先定位、再改代码、再挑补丁」。工具只有 bash 和文件编辑器，浏览器关掉了。教师是 gpt-4o-2024-08-06 和 claude-3-5-sonnet-20241022。模型自己决定何时结束，一条成功轨迹平均大约 19 轮，结束时抽出 git diff。" },
+  { id: "filter", x: 350, y: 70, w: 120, title: "拒绝采样", sub: "留下 491 条", detail: "用 SWE-Gym 的测试判定这道题是否 resolved。没过的轨迹丢掉，不拿去教策略模型。「拒绝」的是失败样本。主实验只留 491 条，并且限制在 32k token 以内。" },
+  { id: "sft", x: 515, y: 20, w: 130, title: "策略模型", sub: "Qwen2.5-Coder", detail: "Rejection Sampling Fine-Tuning，也叫 filtered behavior cloning：学生按负对数似然模仿成功轨迹里的动作。基座是 Qwen2.5-Coder-Instruct 的 7B、14B、32B。这不是在线强化学习，没有逐步价值函数，也没有 PPO。教师来采样叫 off-policy；学生自己采样、留下自己的成功再微调，叫 on-policy self-improvement。后一条在 MoatlessTools 上把 32B 的 Lite 做到 19.7%。" },
+  { id: "verifier", x: 515, y: 120, w: 130, title: "验证器", sub: "成功和失败配平", detail: "同一个 Qwen2.5-Coder 再训一个结果判别模型。输入一条完整轨迹（Moatless 那条线则是任务、上下文和补丁拼起来的文本），输出一个 token，表示成功或失败。分数是「成功」相对「失败」的归一化概率。训练数据把两类配平，并混合教师轨迹和学生自己的轨迹。它不改代码，只在多份答案里挑一份。" },
 ]
 
 const edges: [string, string][] = [
@@ -84,7 +84,7 @@ export function SweGymDiagram() {
               </text>
             </g>
           ))}
-          <text x="580" y="186" textAnchor="middle" className="fill-muted-foreground text-[10px]">推理时：采样 N 条轨迹 → verifier 选最优</text>
+          <text x="330" y="186" textAnchor="middle" className="fill-muted-foreground text-[10px]">失败轨迹不进策略模型，但和成功轨迹一起训练验证器</text>
         </svg>
       </div>
 

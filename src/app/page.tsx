@@ -7,6 +7,8 @@ import { Summary } from "@/components/summary"
 import { AciDiagram } from "@/components/diagrams/aci-diagram"
 import { CodeActDiagram } from "@/components/diagrams/codeact-diagram"
 import { SweGymDiagram } from "@/components/diagrams/swegym-diagram"
+import { SweGymCompare, SweGymMethod } from "@/components/diagrams/swegym-notes"
+import { SweGymInference } from "@/components/diagrams/swegym-inference"
 import { SynthDiagram } from "@/components/diagrams/synth-diagram"
 import { SweRlDiagram } from "@/components/diagrams/swerl-diagram"
 import { DeepSweDiagram } from "@/components/diagrams/deepswe-diagram"
@@ -48,7 +50,12 @@ export default function Home() {
           <CodeActDiagram />
         </StageSection>
         <StageSection stage={stageById["swe-gym"]}>
-          <SweGymDiagram />
+          <div className="flex flex-col gap-6">
+            <SweGymCompare />
+            <SweGymMethod />
+            <SweGymDiagram />
+            <SweGymInference />
+          </div>
         </StageSection>
         <StageSection stage={stageById["synth"]}>
           <SynthDiagram />

@@ -99,19 +99,19 @@ export const stages: Stage[] = [
     org: "UC Berkeley · UIUC · CMU · Apple",
     paradigm: "训练环境：真实任务 + SFT",
     color: "#10b981",
-    tagline: "第一个用于训练 SWE agent 的环境：真实 GitHub 任务 + 可执行运行时 + 单元测试。",
+    tagline: "SWE-Gym 是训练场，SWE-bench 是考试。题目同构，但只有训练场能当场告诉你：测试过了没有。",
     problem:
-      "SWE-bench 只是评测集。想训练，需要大量“有仓库、有依赖、能跑测试”的任务实例，否则无法判断 agent 的轨迹对不对。",
+      "SWE-bench 早期的训练集没有可执行环境，也没有「这道题做成了没有」的信号，模型只能模仿金补丁。想按测试结果来训练，需要每题自带仓库、依赖和单元测试。",
     ideas: [
-      "2,438 个真实 Python 任务，来自 11 个仓库；每个任务都有预装依赖的运行环境和单元测试。",
-      "用强模型（GPT-4o / Claude 3.5 Sonnet）+ OpenHands 在环境里采样轨迹，用测试筛出成功轨迹。",
-      "拒绝采样微调（Rejection Sampling Fine-Tuning）：仅用 491 条成功轨迹微调 Qwen2.5-Coder-32B。",
-      "同时用成功/失败轨迹训练 verifier（结果奖励模型 ORM），推理时采样多条轨迹择优（best-of-N）。",
+      "2,438 道真实 Python 任务、11 个仓库，每题一个可执行环境。仓库避开 SWE-bench 的测试仓库，否则训练分没有意义。",
+      "OpenHands 的 CodeActAgent 2.1 在训练场里自己决定下一步：bash 加文件编辑器，成功轨迹平均大约 19 轮，结束时抽出 git diff。",
+      "拒绝采样丢掉测试没过的轨迹。留下的 491 条（来自 GPT-4o 和 Claude 3.5 Sonnet，32k token 内）做 Rejection Sampling Fine-Tuning，也就是用成功轨迹做监督微调。",
+      "同一个 Qwen2.5-Coder 再训一个验证器。推理可以只跑一次，也可以采样 16 条、让验证器挑得分最高的补丁。",
     ],
     stats: [
-      { value: "2,438", label: "真实任务实例（11 个仓库）" },
-      { value: "7.0% → 20.6%", label: "SWE-bench Verified（仅 491 条轨迹 SFT）" },
-      { value: "32.0%", label: "Verified，配合 verifier 做 best-of-16" },
+      { value: "2,438", label: "训练题（11 个仓库）；考场是 Lite 300、Verified 500" },
+      { value: "15.3% / 20.6%", label: "32B 只跑一次：Lite / Verified" },
+      { value: "26.0% / 32.0%", label: "32B 策略 + 32B 验证器，16 条里挑 1 条" },
     ],
     limitation:
       "真实任务依赖人工写的 issue 和测试，数量受限；为每个任务单独构建 Docker 环境成本极高（约 6TB）。规模成为瓶颈，于是出现了“合成任务”的路线。",
