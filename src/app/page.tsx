@@ -11,6 +11,7 @@ import { SweGymCompare, SweGymMethod } from "@/components/diagrams/swegym-notes"
 import { SweGymInference } from "@/components/diagrams/swegym-inference"
 import { SynthDiagram } from "@/components/diagrams/synth-diagram"
 import { SweRlDiagram } from "@/components/diagrams/swerl-diagram"
+import { SweRlExam, SweRlTrain } from "@/components/diagrams/swerl-train"
 import { DeepSweDiagram } from "@/components/diagrams/deepswe-diagram"
 import { SelfPlayDiagram } from "@/components/diagrams/selfplay-diagram"
 import { stageById } from "@/lib/stages"
@@ -61,7 +62,11 @@ export default function Home() {
           <SynthDiagram />
         </StageSection>
         <StageSection stage={stageById["swe-rl"]}>
-          <SweRlDiagram />
+          <div className="flex flex-col gap-6">
+            <SweRlDiagram />
+            <SweRlTrain />
+            <SweRlExam />
+          </div>
         </StageSection>
         <StageSection stage={stageById["deepswe"]}>
           <DeepSweDiagram />

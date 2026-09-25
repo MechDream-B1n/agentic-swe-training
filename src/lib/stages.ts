@@ -167,16 +167,15 @@ export const stages: Stage[] = [
     problem:
       "DeepSeek-R1 证明了 RL 能激发推理能力，但它依赖可自动判分的数学/竞赛题。真实软件任务要跑测试，环境昂贵。能否不执行代码也获得奖励？",
     ideas: [
-      "数据：从 GitHub 2400 万条事件中筛出约 27.3 万个高质量 PR，得到“issue + 代码上下文 + 真实补丁（oracle）”三元组。",
-      "策略模型先推理，再输出 SEARCH/REPLACE 格式的编辑。",
-      "奖励：格式错误记 −1；否则用 difflib.SequenceMatcher 计算生成补丁与 oracle 补丁的相似度（0–1）。",
-      "用 GRPO 在 Llama-3.3-70B-Instruct 上训练；评测时使用流水线式脚手架 Agentless Mini（定位 → 修复 → 复现测试 → 重排序）。",
-      "意外收获：只在 SWE 数据上做 RL，数学、代码推理、MMLU 等域外任务也提升了，而同源数据 SFT 反而下降。",
+      "单轮：一次生成就是整条轨迹。提示词里是 issue 和文件全文，oracle 补丁只用来打分，训练时不建仓库、不跑测试。",
+      "每个全局步抽 32 道题，每题采样 16 条回答。格式错记 −1，否则是和 oracle 的相似度。组内算出优势后，只在最后做一次 Adam，全量更新 70B 策略。",
+      "算损失时新旧策略仍是同一套权重，概率比 ratio 等于 1，截断不起作用。真正每步都在拉住模型的，是和训练起点 Llama-3.3-70B-Instruct 的 KL。",
+      "这样的全局步重复 1,600 次。考场是另一套程序：Agentless Mini 定位、采样 500 份补丁、用复现测试重排后只交一份。",
     ],
     stats: [
-      { value: "41.0%", label: "Llama3-SWE-RL-70B，SWE-bench Verified" },
-      { value: "273k", label: "RL 种子 PR 数据" },
-      { value: "0 次", label: "训练时代码执行次数：奖励免执行" },
+      { value: "1,600", label: "全局步 = 1,600 次全量 Adam" },
+      { value: "32 × 16", label: "每步题数 × 每题回答数，然后才更新一次" },
+      { value: "41.0%", label: "考场 pass@1；只修对文件、贪心一份是 34.8%" },
     ],
     limitation:
       "相似度奖励会惩罚“写法不同但同样正确”的修复，而且它是单轮生成，不是多轮 agent。下一步自然是：在真实可执行环境里做多轮 agentic RL，用测试结果当奖励。",

@@ -5,7 +5,7 @@ const table = [
   { id: "codeact", policy: "Llama2 / Mistral-7B", env: "Python 解释器", task: "通用多轮任务", signal: "强模型轨迹", opt: "SFT" },
   { id: "swe-gym", policy: "Qwen2.5-Coder-32B", env: "每任务一个 Docker", task: "人类 issue + 测试", signal: "测试过滤后的轨迹", opt: "拒绝采样 SFT + ORM" },
   { id: "synth", policy: "Qwen2.5-Coder-32B", env: "每仓库一个 / 自动构建", task: "合成 bug / commit 反向翻译", signal: "测试过滤后的轨迹", opt: "SFT + 混合验证器" },
-  { id: "swe-rl", policy: "Llama-3.3-70B", env: "无需执行", task: "真实 PR", signal: "与 oracle 的相似度", opt: "GRPO（单轮）" },
+  { id: "swe-rl", policy: "Llama-3.3-70B 全量", env: "无需执行", task: "真实 PR", signal: "与 oracle 的相似度", opt: "单轮 GRPO，每步 1 次 Adam" },
   { id: "deepswe", policy: "Qwen3-32B", env: "R2E-Gym Docker", task: "R2E-Gym 合成任务", signal: "测试 0/1", opt: "GRPO++（多轮）" },
   { id: "ssr", policy: "CWM（32B）", env: "原始仓库镜像", task: "模型自己注入 bug", signal: "测试 ±1 与解决率", opt: "自博弈 RL" },
 ] as const
