@@ -71,10 +71,10 @@ export const stages: Stage[] = [
     problem:
       "SWE-agent 的 ACI 是一套专用命令，查看器状态也绑在这套界面上。要让不同模型在真实仓库里通用地修 issue，需要的是沙箱、可执行动作，以及一份按时间记下所有动作和观察的记录。",
     ideas: [
-      "三个部件：Agent 决定下一步，事件流按时间追加 Action 和 Observation，Runtime 在 Docker 里执行。",
-      "动作受 CodeAct 启发，但不是每轮只交一段 Python。核心是 CmdRunAction（bash）和 IPythonRunCellAction（Python）；浏览网页是另一类动作。",
-      "CodeActAgent 是默认的通用 agent，用工具调用选择动作。回复正文记为 thought，和工具调用一起进入事件流。",
-      "每个任务启动一个隔离容器。沙箱内的 API 执行命令和 IPython，再把结果写回事件流。shell 会话是活着的。",
+      "三个部件：Agent 选工具，事件流按时间追加每条 Action 和 Observation，Runtime 在 Docker 里执行。",
+      "常用工具是 execute_bash、execute_ipython_cell、str_replace_editor，浏览器可选。它们落到事件流里，类型分别是 CmdRunAction、IPythonRunCellAction 和编辑事件。",
+      "事件流是完整账本。上下文是从账本取出的视图：开头和最近的事件留下，中间可以由 Condenser 换成摘要。工作目录和 IPython 变量留在沙箱里。",
+      "SWE-agent 的一轮是 Thought 加一条 ACI 命令，查看器窗口记在接口内部。这里一轮是一次工具调用，思考记在 action.thought。",
       "论文不更新权重。CodeActAgent v1.8 在 SWE-bench Lite、不用 hint 时，Claude 3.5 Sonnet 为 26%，GPT-4o 为 22%。",
     ],
     stats: [
@@ -85,8 +85,8 @@ export const stages: Stage[] = [
     limitation:
       "强模型已经能在这个循环里修仓库，但轨迹仍来自闭源模型。开源模型要学会同样的多轮行为，还需要带单元测试的训练环境。SWE-Gym 使用的就是这里的 CodeActAgent 2.1，并关掉浏览器。",
     question: {
-      q: "它和 CodeAct 论文是同一件工作吗？",
-      a: "不是。CodeAct 论文规定动作是一段可执行 Python，并在通用工具任务上做了监督微调。OpenHands 是后来的平台：事件流、Docker 沙箱和评测循环。CodeActAgent 借用了「用代码与环境交互」的想法，但每轮是一次工具调用，bash、IPython 和后来的文件编辑器可以并用。",
+      q: "事件流和上下文是同一件事吗？",
+      a: "事件流是只追加的完整记录，轨迹文件保存的就是它。上下文是下一轮提示读到的视图：太长时 Condenser 让中间的旧事件退出提示，这次裁剪再写成一条事件。容器里的工作目录、活着的 shell、IPython 变量仍在沙箱中，它们不占用上下文窗口里的文字。",
     },
     links: [{ label: "arXiv 2407.16741", href: "https://arxiv.org/abs/2407.16741" }],
   },

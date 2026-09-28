@@ -9,7 +9,7 @@
 | 章节 | 交互图 |
 | --- | --- |
 | SWE-agent | 逐步播放一条 ACI 轨迹，包括 linter 护栏拦截错误编辑 |
-| OpenHands CodeActAgent | 逐步播放一条事件流：工具调用、Docker 执行、观察写回 |
+| OpenHands CodeActAgent | 逐步播放一条事件流；工具表；事件流 / 上下文 / 沙箱；和 SWE-agent、mini-swe-agent、Agentless 的轨迹对照 |
 | SWE-Gym | 训练流水线（可点击节点）和提升幅度柱状图 |
 | SWE-smith / R2E-Gym | 四类造 bug 策略、环境存储对比、混合验证器权重滑块 |
 | SWE-RL | 在线计算相似度奖励（TypeScript 复刻的 `difflib.SequenceMatcher`） |

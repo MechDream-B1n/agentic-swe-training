@@ -6,6 +6,7 @@ import { StageSection, Callout } from "@/components/stage-section"
 import { Summary } from "@/components/summary"
 import { AciDiagram } from "@/components/diagrams/aci-diagram"
 import { OpenHandsDiagram } from "@/components/diagrams/openhands-diagram"
+import { OpenHandsContext, OpenHandsTools, OpenHandsVs } from "@/components/diagrams/openhands-notes"
 import { SweGymDiagram } from "@/components/diagrams/swegym-diagram"
 import { SweGymCompare, SweGymMethod } from "@/components/diagrams/swegym-notes"
 import { SweGymInference } from "@/components/diagrams/swegym-inference"
@@ -48,7 +49,12 @@ export default function Home() {
           <AciDiagram />
         </StageSection>
         <StageSection stage={stageById["openhands"]}>
-          <OpenHandsDiagram />
+          <div className="flex flex-col gap-6">
+            <OpenHandsDiagram />
+            <OpenHandsTools />
+            <OpenHandsContext />
+            <OpenHandsVs />
+          </div>
         </StageSection>
         <StageSection stage={stageById["swe-gym"]}>
           <div className="flex flex-col gap-6">
