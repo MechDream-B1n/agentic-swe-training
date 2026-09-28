@@ -4,7 +4,7 @@ const rows = [
   { name: "SWE-Gym-32B", date: "2024.12", base: 20.6, tts: 32.0, ttsNote: "verifier best-of-16", color: "#10b981" },
   { name: "R2E-Gym-32B", date: "2025.04", base: 34.4, tts: 51.0, ttsNote: "混合验证器 ×26", color: "#f59e0b" },
   { name: "SWE-agent-LM-32B", date: "2025.04", base: 40.2, color: "#f59e0b" },
-  { name: "Llama3-SWE-RL-70B", date: "2025.02", base: 41.0, color: "#ef4444", note: "Agentless Mini，含多次采样与重排序" },
+  { name: "Llama3-SWE-RL-70B", date: "2025.02", base: 41.0, color: "#ef4444" },
   { name: "DeepSWE-32B", date: "2025.07", base: 42.2, tts: 59.0, ttsNote: "混合 TTS", color: "#ec4899" },
 ]
 
@@ -34,7 +34,7 @@ export function ScoreChart() {
                   </span>
                 )}
               </div>
-              {(r.ttsNote || r.note) && <div className="mt-0.5 text-[10px] text-muted-foreground">{r.ttsNote ?? r.note}</div>}
+              {r.ttsNote && <div className="mt-0.5 text-[10px] text-muted-foreground">{r.ttsNote}</div>}
             </div>
           </div>
         ))}

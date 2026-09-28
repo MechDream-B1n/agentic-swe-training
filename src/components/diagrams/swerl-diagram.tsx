@@ -84,7 +84,7 @@ export function SweRlDiagram() {
           <text x="480" y="148" textAnchor="middle" className="fill-red-500 text-[10px]">更新策略参数</text>
           <text x="480" y="20" textAnchor="middle" className="fill-muted-foreground text-[10px]">oracle 补丁（真实合并的 PR）</text>
           <path d="M480 24 L480 28" stroke="#a1a1aa" />
-          <text x="340" y="165" textAnchor="middle" className="fill-muted-foreground text-[10px]">单轮生成，不与环境交互；评测时用 Agentless Mini 流水线</text>
+          <text x="340" y="165" textAnchor="middle" className="fill-muted-foreground text-[10px]">单轮生成，不建仓库，不跑测试</text>
         </svg>
       </div>
 
