@@ -43,7 +43,8 @@ export const stages: Stage[] = [
       "窗口化文件查看器：每次只展示 ~100 行并带行号，避免上下文爆炸。",
       "带护栏的编辑：edit 后自动跑 linter，语法错误的修改直接回滚并告诉模型原因。",
       "简洁反馈：命令无输出时也明确返回“执行成功，无输出”，减少模型困惑。",
-      "ReAct 式循环：Thought → Action → Observation，直到 submit 产出补丁。",
+      "一次补全里写出 Thought 和恰好一条命令。最近约 5 条观察留在提示里，轨迹按轮保存。",
+      "mini-swe-agent 是后来把同一问题收薄的版本：只剩 bash，每条命令是一次新的子进程，消息列表就是轨迹。",
     ],
     stats: [
       { value: "12.47%", label: "SWE-bench 完整集（GPT-4 Turbo）" },
@@ -56,7 +57,10 @@ export const stages: Stage[] = [
       q: "为什么 edit 命令要内置 linter 检查，而不是让模型自己运行 python -m py_compile？",
       a: "每多一轮交互，就多一次出错和上下文膨胀的机会。把常见错误的检测前置到接口层，相当于替模型挡掉一类低级失败，同时给出结构化的错误信息。这是“接口设计影响 agent 表现”的核心论点。",
     },
-    links: [{ label: "arXiv 2405.15793", href: "https://arxiv.org/abs/2405.15793" }],
+    links: [
+      { label: "arXiv 2405.15793", href: "https://arxiv.org/abs/2405.15793" },
+      { label: "mini-swe-agent", href: "https://mini-swe-agent.com/" },
+    ],
   },
   {
     id: "openhands",

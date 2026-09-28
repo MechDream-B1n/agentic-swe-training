@@ -13,9 +13,10 @@ export function SiteNav() {
       const h = document.documentElement
       setProgress(h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight))
       let cur: string | null = null
-      for (const s of stages) {
-        const el = document.getElementById(s.id)
-        if (el && el.getBoundingClientRect().top < window.innerHeight * 0.35) cur = s.id
+      const ids = stages.flatMap((s) => (s.id === "openhands" ? [s.id, "harness"] : [s.id]))
+      for (const id of ids) {
+        const el = document.getElementById(id)
+        if (el && el.getBoundingClientRect().top < window.innerHeight * 0.35) cur = id
       }
       const summary = document.getElementById("summary")
       if (summary && summary.getBoundingClientRect().top < window.innerHeight * 0.35) cur = "summary"
@@ -34,17 +35,29 @@ export function SiteNav() {
         </a>
         <nav className="no-scrollbar -mx-2 flex min-w-0 flex-1 gap-1 overflow-x-auto px-2">
           {stages.map((s) => (
-            <a
-              key={s.id}
-              href={`#${s.id}`}
-              className={cn(
-                "flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs transition-colors",
-                active === s.id ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted"
+            <span key={s.id} className="contents">
+              <a
+                href={`#${s.id}`}
+                className={cn(
+                  "flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs transition-colors",
+                  active === s.id ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted"
+                )}
+              >
+                <span className="size-1.5 rounded-full" style={{ background: s.color }} />
+                {s.short}
+              </a>
+              {s.id === "openhands" && (
+                <a
+                  href="#harness"
+                  className={cn(
+                    "shrink-0 rounded-full px-2.5 py-1 text-xs transition-colors",
+                    active === "harness" ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted"
+                  )}
+                >
+                  三个 harness
+                </a>
               )}
-            >
-              <span className="size-1.5 rounded-full" style={{ background: s.color }} />
-              {s.short}
-            </a>
+            </span>
           ))}
           <a
             href="#summary"

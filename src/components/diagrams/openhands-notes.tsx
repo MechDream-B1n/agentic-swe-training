@@ -23,38 +23,30 @@ const log = [
   { id: "8", role: "保留", text: "Observation · 替换已写入文件", inView: true },
 ]
 
-const harnesses = [
+const turns = [
   {
-    name: "SWE-agent",
-    color: "#0ea5e9",
-    turn: "一次补全里先写 Thought，再写恰好一条 ACI 命令。",
-    record: "轨迹按轮保存：Thought、Action、Observation。",
-    context: "最近约 5 条观察留全文，更早的收成一行。文件查看器记住当前文件和约 100 行窗口。",
-    edit: "命令表是 find_file、search_dir、open、goto、scroll、edit、submit。edit 后跑 linter，语法错误回滚。",
+    name: "execute_bash",
+    submit: "execute_bash\nthought: 先按文件名定位。\ncommand: find . -name separable.py",
+    saved: "CmdRunAction\n  thought: 先按文件名定位。\n  command: find . -name separable.py\nCmdOutputObservation\n  exit_code: 0\n  content: ./astropy/modeling/separable.py",
+    note: "这一轮只能有一个工具调用。command 是普通 bash，可以写 &&。shell 会话还在，下一条不用重新 cd。",
   },
   {
-    name: "OpenHands CodeActAgent",
-    color: "#8b5cf6",
-    turn: "一次工具调用。回复正文记在这条 Action 的 thought 里。",
-    record: "轨迹是事件流：每条有类型，Action 和 Observation 交替追加。",
-    context: "账本全留。Condenser 另做一份视图，忘掉的事件编号也写回事件流。",
-    edit: "execute_bash、execute_ipython_cell、str_replace_editor，browser 可选。编辑器要求原文精确匹配，不自动做语法回滚。",
+    name: "execute_ipython_cell",
+    submit: "execute_ipython_cell\nthought: 在解释器里复现。\ncode: |\n  from astropy.modeling import separability_matrix\n  print(separability_matrix(model))",
+    saved: "IPythonRunCellAction\n  thought: 在解释器里复现。\n  code: print(separability_matrix(model))\nIPythonRunCellObservation\n  content: [[ True False ... ]]",
+    note: "code 是一段 Python。变量留在 Jupyter 里。AgentSkills 写在这段代码中调用，没有单独的工具名。",
   },
   {
-    name: "mini-swe-agent",
-    color: "#71717a",
-    turn: "助手消息里写思考，唯一动作是一个 bash 代码块。",
-    record: "轨迹就是对话消息。没有单独的 Action 类型。",
-    context: "每条命令是一次新的子进程，没有跨命令的 shell，也没有文件查看器状态。",
-    edit: "只有 bash。没有 linter 护栏，也没有专用编辑器。脚手架薄，方便拿来做微调。",
+    name: "str_replace_editor",
+    submit: "str_replace_editor\nthought: 第 245 行把右侧写成了 1。\ncommand: str_replace\npath: astropy/modeling/separable.py\nold_str: cright[...] = 1\nnew_str: cright[...] = right",
+    saved: "FileEditAction / editor event\n  command: str_replace\n  path: astropy/modeling/separable.py\nFileEditObservation\n  原文已替换。匹配失败则这条观察是错误，文件保持原样。",
+    note: "command 还可以是 view、create、insert、undo_edit。view 要带 path 和 view_range。替换必须和原文逐字相同，没有 linter 回滚。",
   },
   {
-    name: "Agentless",
-    color: "#f59e0b",
-    turn: "没有「自己决定下一步」。流程写死为定位文件，再生成补丁，再用测试重排。",
-    record: "保存的是定位结果和补丁候选，不是 Action / Observation 事件流。",
-    context: "每一步的提示由流水线拼出来，模型看不到自己上一轮的工具观察。",
-    edit: "模型交 SEARCH/REPLACE 或补丁文本。执行和筛选在流水线里，不在一个 agent 循环里。",
+    name: "结束",
+    submit: "execute_bash\nthought: 修复已经验证，结束。\ncommand: exit",
+    saved: "CmdRunAction\n  command: exit\n然后评测从容器取 git diff。\nAgentFinishAction 也可以结束；SWE-bench 脚本若看到模型转去问人，会要求改用 exit。",
+    note: "结束动作里不写补丁。补丁是仓库里已经发生的文件变化。browser 若开着，这一轮也可以是一次网页操作，而不是 bash。",
   },
 ]
 
@@ -157,44 +149,40 @@ export function OpenHandsContext() {
   )
 }
 
-export function OpenHandsVs() {
-  const [active, setActive] = useState(1)
-  const cur = harnesses[active]
+export function OpenHandsTurn() {
+  const [i, setI] = useState(0)
+  const cur = turns[i]
   return (
-    <DiagramFrame title="图 2 续 · 和另外三种做法怎么区分" hint="点一个名字看它的一轮和它的轨迹">
+    <DiagramFrame title="图 2 续 · 每一轮提交什么，轨迹里留下什么" hint="切换一种工具调用">
+      <p className="mb-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+        一次模型调用只提交一个工具。思考写在参数外面的 thought，不单独再调用一次。事件流按类型把这次调用和随后的观察各记一条。系统说明在流的开头，是一条 SystemMessageAction，不跟命令混在同一条里。
+      </p>
       <div className="mb-4 flex flex-wrap gap-2">
-        {harnesses.map((h, i) => (
+        {turns.map((t, idx) => (
           <button
-            key={h.name}
+            key={t.name}
             type="button"
-            onClick={() => setActive(i)}
+            onClick={() => setI(idx)}
             className={cn(
-              "rounded-full border px-3 py-1 text-xs",
-              active === i ? "text-white" : "text-muted-foreground hover:bg-muted"
+              "rounded-full border px-3 py-1 font-mono text-xs",
+              i === idx ? "border-violet-600 bg-violet-600 text-white" : "text-muted-foreground hover:bg-muted"
             )}
-            style={active === i ? { background: h.color, borderColor: h.color } : undefined}
           >
-            {h.name}
+            {t.name}
           </button>
         ))}
       </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {(
-          [
-            ["一轮里模型交什么", cur.turn],
-            ["轨迹文件里有什么", cur.record],
-            ["上下文和隐藏状态", cur.context],
-            ["改文件的方式", cur.edit],
-          ] as const
-        ).map(([title, body]) => (
-          <div key={title} className="rounded-xl border p-4">
-            <div className="text-xs font-semibold" style={{ color: cur.color }}>
-              {title}
-            </div>
-            <p className="mt-2 text-sm leading-relaxed">{body}</p>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div>
+          <div className="mb-2 text-xs font-semibold text-violet-700">这一轮模型提交的内容</div>
+          <pre className="overflow-x-auto whitespace-pre-wrap rounded-lg bg-zinc-950 p-3 font-mono text-[12px] leading-relaxed text-zinc-100">{cur.submit}</pre>
+        </div>
+        <div>
+          <div className="mb-2 text-xs font-semibold text-violet-700">追加进事件流的记录</div>
+          <pre className="overflow-x-auto whitespace-pre-wrap rounded-lg bg-zinc-950 p-3 font-mono text-[12px] leading-relaxed text-zinc-100">{cur.saved}</pre>
+        </div>
       </div>
+      <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{cur.note}</p>
     </DiagramFrame>
   )
 }

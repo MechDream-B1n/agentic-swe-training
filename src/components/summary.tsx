@@ -27,6 +27,7 @@ const threads = [
 
 const glossary = [
   ["ACI", "Agent-Computer Interface，为 LM 设计的命令、反馈格式和护栏。"],
+  ["mini-swe-agent", "只暴露 bash 的薄脚手架。每条命令是一次新的子进程，消息列表既是轨迹也是下一轮提示。"],
   ["事件流", "OpenHands 里按时间只追加的记录。用户消息、Action、Observation 和压缩都是一条事件。轨迹文件保存的是它。"],
   ["上下文视图", "下一轮真正送进模型的内容。Condenser 从事件流里留下开头和最近的事件，中间可以换成摘要。"],
   ["SWE-bench Verified", "OpenAI 人工校验过的 500 道 SWE-bench 子集，是目前最常用的评测。"],

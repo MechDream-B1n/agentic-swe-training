@@ -5,8 +5,10 @@ import { ScoreChart } from "@/components/score-chart"
 import { StageSection, Callout } from "@/components/stage-section"
 import { Summary } from "@/components/summary"
 import { AciDiagram } from "@/components/diagrams/aci-diagram"
+import { SweAgentNotes } from "@/components/diagrams/swe-agent-notes"
 import { OpenHandsDiagram } from "@/components/diagrams/openhands-diagram"
-import { OpenHandsContext, OpenHandsTools, OpenHandsVs } from "@/components/diagrams/openhands-notes"
+import { OpenHandsContext, OpenHandsTools, OpenHandsTurn } from "@/components/diagrams/openhands-notes"
+import { HarnessCompare } from "@/components/diagrams/harness-compare"
 import { SweGymDiagram } from "@/components/diagrams/swegym-diagram"
 import { SweGymCompare, SweGymMethod } from "@/components/diagrams/swegym-notes"
 import { SweGymInference } from "@/components/diagrams/swegym-inference"
@@ -46,16 +48,28 @@ export default function Home() {
         </section>
 
         <StageSection stage={stageById["swe-agent"]}>
-          <AciDiagram />
+          <div className="flex flex-col gap-6">
+            <AciDiagram />
+            <SweAgentNotes />
+          </div>
         </StageSection>
         <StageSection stage={stageById["openhands"]}>
           <div className="flex flex-col gap-6">
             <OpenHandsDiagram />
             <OpenHandsTools />
+            <OpenHandsTurn />
             <OpenHandsContext />
-            <OpenHandsVs />
           </div>
         </StageSection>
+        <section id="harness" className="scroll-mt-20 border-t py-14 sm:py-20">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">三个 harness 对照</h2>
+          <p className="mt-2 max-w-3xl text-base leading-relaxed text-muted-foreground">
+            SWE-agent、mini-swe-agent 和 OpenHands CodeActAgent 解决的是同一件事：模型怎样在仓库里多走几步，再交出补丁。下面把工具、每一轮的提交、上下文和轨迹放在一起。
+          </p>
+          <div className="mt-8">
+            <HarnessCompare />
+          </div>
+        </section>
         <StageSection stage={stageById["swe-gym"]}>
           <div className="flex flex-col gap-6">
             <SweGymCompare />
