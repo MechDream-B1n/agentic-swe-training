@@ -9,7 +9,7 @@ const ys = ["通用 / 无", "人类真实数据", "自动合成", "模型自己�
 
 const points: { id: StageId; label: string; x: number; y: number; dx?: number; dy?: number; why: string }[] = [
   { id: "swe-agent", label: "SWE-agent", x: 0, y: 0, why: "不训练，只设计接口，直接用 GPT-4 推理。" },
-  { id: "codeact", label: "CodeAct", x: 1, y: 0, dy: -14, why: "用通用任务上的约 7k 条轨迹做 SFT。" },
+  { id: "openhands", label: "OpenHands", x: 0, y: 0, dx: 78, dy: 14, why: "不训练。事件流加 Docker 沙箱，CodeActAgent 用工具调用跑 bash、Python 和编辑器。" },
   { id: "swe-gym", label: "SWE-Gym", x: 1, y: 1, why: "人类写的真实 issue + 测试；用强模型轨迹做 SFT。" },
   { id: "synth", label: "SWE-smith", x: 1, y: 2, dx: -22, why: "向仓库注入合成 bug，LM 写 issue；5k 轨迹 SFT。" },
   { id: "synth", label: "R2E-Gym", x: 1, y: 2, dx: 22, dy: 16, why: "从 commit 自动生成任务与测试；SFT + 混合验证器。" },

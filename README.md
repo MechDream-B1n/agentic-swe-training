@@ -2,14 +2,14 @@
 
 一个交互式的中文学习网站，按下面这条脉络讲解软件工程 Agent 的训练范式是怎样演进的：
 
-**SWE-agent → CodeAct → SWE-Gym → SWE-smith / R2E-Gym → SWE-RL → DeepSWE → Self-play SWE-RL**
+**SWE-agent → OpenHands CodeActAgent → SWE-Gym → SWE-smith / R2E-Gym → SWE-RL → DeepSWE → Self-play SWE-RL**
 
 每一章包含：要解决的问题、核心做法、关键数字、局限（也就是下一章的出发点），以及一张可以动手操作的图：
 
 | 章节 | 交互图 |
 | --- | --- |
 | SWE-agent | 逐步播放一条 ACI 轨迹，包括 linter 护栏拦截错误编辑 |
-| CodeAct | 同一任务下 JSON 工具调用与代码动作的对比 |
+| OpenHands CodeActAgent | 逐步播放一条事件流：工具调用、Docker 执行、观察写回 |
 | SWE-Gym | 训练流水线（可点击节点）和提升幅度柱状图 |
 | SWE-smith / R2E-Gym | 四类造 bug 策略、环境存储对比、混合验证器权重滑块 |
 | SWE-RL | 在线计算相似度奖励（TypeScript 复刻的 `difflib.SequenceMatcher`） |

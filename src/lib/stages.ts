@@ -1,6 +1,6 @@
 export type StageId =
   | "swe-agent"
-  | "codeact"
+  | "openhands"
   | "swe-gym"
   | "synth"
   | "swe-rl"
@@ -51,7 +51,7 @@ export const stages: Stage[] = [
       { value: "0", label: "训练步数：纯提示 + 接口工程" },
     ],
     limitation:
-      "效果完全依赖闭源大模型，开源小模型用同样的 ACI 表现很差。接下来的问题是：动作应该用什么形式表达，以及怎样让开源模型也学会当 agent。",
+      "效果完全依赖闭源大模型，开源小模型用同样的 ACI 表现很差。专用命令表也绑死了交互方式。接下来需要一套能跑任意命令、又能把整条轨迹记下来的运行时。",
     question: {
       q: "为什么 edit 命令要内置 linter 检查，而不是让模型自己运行 python -m py_compile？",
       a: "每多一轮交互，就多一次出错和上下文膨胀的机会。把常见错误的检测前置到接口层，相当于替模型挡掉一类低级失败，同时给出结构化的错误信息。这是“接口设计影响 agent 表现”的核心论点。",
@@ -59,36 +59,36 @@ export const stages: Stage[] = [
     links: [{ label: "arXiv 2405.15793", href: "https://arxiv.org/abs/2405.15793" }],
   },
   {
-    id: "codeact",
+    id: "openhands",
     index: 2,
-    name: "CodeAct",
-    short: "CodeAct",
-    date: "2024.02",
-    org: "UIUC · Xingyao Wang 等",
-    paradigm: "动作空间：代码即动作",
+    name: "OpenHands CodeActAgent",
+    short: "OpenHands",
+    date: "2024.07",
+    org: "OpenHands（原 OpenDevin）",
+    paradigm: "运行时：事件流 + 沙箱",
     color: "#8b5cf6",
-    tagline: "把可执行的 Python 代码作为统一的动作空间，替代 JSON / 文本格式的工具调用。",
+    tagline: "不改模型。把「写代码、跑命令、改文件」收成一条可回放的事件流，在 Docker 沙箱里执行。",
     problem:
-      "JSON 工具调用一次只能调用一个工具，没有变量、循环和条件分支，组合多个工具要来回很多轮；而且每新增一个工具都要改动作格式。",
+      "SWE-agent 的 ACI 是一套专用命令，查看器状态也绑在这套界面上。要让不同模型在真实仓库里通用地修 issue，需要的是沙箱、可执行动作，以及一份按时间记下所有动作和观察的记录。",
     ideas: [
-      "动作 = 一段 Python 代码，交给解释器执行；观测 = stdout / 报错信息。",
-      "天然支持控制流与数据流：循环、条件、变量复用，一轮完成多步工具组合。",
-      "可以直接调用现成的 Python 包，工具生态几乎无限。",
-      "报错信息本身就是反馈，模型能据此自我调试（self-debug）。",
-      "构建 CodeActInstruct（约 7k 条多轮交互轨迹）微调出 CodeActAgent，并成为 OpenHands（原 OpenDevin）默认 agent 的基础。",
+      "三个部件：Agent 决定下一步，事件流按时间追加 Action 和 Observation，Runtime 在 Docker 里执行。",
+      "动作受 CodeAct 启发，但不是每轮只交一段 Python。核心是 CmdRunAction（bash）和 IPythonRunCellAction（Python）；浏览网页是另一类动作。",
+      "CodeActAgent 是默认的通用 agent，用工具调用选择动作。回复正文记为 thought，和工具调用一起进入事件流。",
+      "每个任务启动一个隔离容器。沙箱内的 API 执行命令和 IPython，再把结果写回事件流。shell 会话是活着的。",
+      "论文不更新权重。CodeActAgent v1.8 在 SWE-bench Lite、不用 hint 时，Claude 3.5 Sonnet 为 26%，GPT-4o 为 22%。",
     ],
     stats: [
-      { value: "+20%", label: "M³ToolEval 上相对 JSON/文本动作的最高成功率提升" },
-      { value: "~30%", label: "完成任务所需交互轮数最多减少" },
-      { value: "7k", label: "CodeActInstruct 多轮轨迹" },
+      { value: "26%", label: "SWE-bench Lite，v1.8 + Claude 3.5 Sonnet，无 hint" },
+      { value: "22%", label: "同一版本 + GPT-4o" },
+      { value: "0", label: "训练步数：只换运行时，不改权重" },
     ],
     limitation:
-      "CodeAct 证明了用轨迹做 SFT 可以教会开源模型当 agent，但训练数据是通用任务。要在真实软件仓库上训练，还缺少可执行、可验证的训练环境。",
+      "强模型已经能在这个循环里修仓库，但轨迹仍来自闭源模型。开源模型要学会同样的多轮行为，还需要带单元测试的训练环境。SWE-Gym 使用的就是这里的 CodeActAgent 2.1，并关掉浏览器。",
     question: {
-      q: "注意：CodeAct（2024.02）其实早于 SWE-agent（2024.05）。为什么这条脉络仍把它放在第二位？",
-      a: "按“思想依赖”而非时间排序：SWE-agent 回答“agent 和环境之间的接口长什么样”，CodeAct 回答“动作用什么语言表达、能否通过微调习得”。后面的 SWE-Gym 正是基于 OpenHands 的 CodeActAgent 脚手架采集轨迹，两条线在这里汇合。",
+      q: "它和 CodeAct 论文是同一件工作吗？",
+      a: "不是。CodeAct 论文规定动作是一段可执行 Python，并在通用工具任务上做了监督微调。OpenHands 是后来的平台：事件流、Docker 沙箱和评测循环。CodeActAgent 借用了「用代码与环境交互」的想法，但每轮是一次工具调用，bash、IPython 和后来的文件编辑器可以并用。",
     },
-    links: [{ label: "arXiv 2402.01030", href: "https://arxiv.org/abs/2402.01030" }],
+    links: [{ label: "arXiv 2407.16741", href: "https://arxiv.org/abs/2407.16741" }],
   },
   {
     id: "swe-gym",

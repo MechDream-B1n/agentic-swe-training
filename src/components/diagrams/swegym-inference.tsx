@@ -9,7 +9,7 @@ type Mode = "once" | "tts"
 
 const once = [
   { t: "题目容器", s: "停在修复前", d: "SWE-bench 的一道题：仓库停在修复前的提交。评测用的隐藏测试始终不给模型看。SWE-Gym 的测试只在训练时当奖励。" },
-  { t: "CodeAct 循环", s: "温度 0", d: "微调后的策略模型在 CodeActAgent 里循环调用 bash 和文件编辑器，直到自己结束，或者步数用完。温度设为 0。" },
+  { t: "CodeActAgent", s: "温度 0", d: "微调后的策略模型在 OpenHands 的 CodeActAgent 里循环调用 bash 和文件编辑器，直到自己结束，或者步数用完。温度设为 0。" },
   { t: "抽出补丁", s: "git diff", d: "结束时从容器里抽出 git diff。这一份补丁就是模型的答案。" },
   { t: "SWE-bench 评测", s: "隐藏测试", d: "补丁交给 SWE-bench 的评测容器。32B 这一档：Lite 15.3%，Verified 20.6%，相对未微调大约各加 12 到 14 个百分点。" },
 ]

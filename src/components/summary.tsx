@@ -2,7 +2,7 @@ import { stages } from "@/lib/stages"
 
 const table = [
   { id: "swe-agent", policy: "GPT-4（闭源）", env: "Docker + ACI", task: "—（只评测）", signal: "无", opt: "提示工程" },
-  { id: "codeact", policy: "Llama2 / Mistral-7B", env: "Python 解释器", task: "通用多轮任务", signal: "强模型轨迹", opt: "SFT" },
+  { id: "openhands", policy: "闭源模型，不更新", env: "Docker + 事件流", task: "通用，含 SWE-bench", signal: "无", opt: "工具调用 + 沙箱执行" },
   { id: "swe-gym", policy: "Qwen2.5-Coder-32B", env: "每任务一个 Docker", task: "人类 issue + 测试", signal: "测试过滤后的轨迹", opt: "拒绝采样 SFT + ORM" },
   { id: "synth", policy: "Qwen2.5-Coder-32B", env: "每仓库一个 / 自动构建", task: "合成 bug / commit 反向翻译", signal: "测试过滤后的轨迹", opt: "SFT + 混合验证器" },
   { id: "swe-rl", policy: "Llama-3.3-70B 全量", env: "无需执行", task: "真实 PR", signal: "与 oracle 的相似度", opt: "单轮 GRPO，每步 1 次 Adam" },
@@ -13,7 +13,7 @@ const table = [
 const threads = [
   {
     title: "交互形式：从“提示”到“动作空间”",
-    body: "SWE-agent 让我们意识到接口本身就是 agent 的一部分；CodeAct 把动作统一成代码。后来的训练工作几乎都继承了“bash + 编辑器 + 提交”的动作集合，训练的对象从“单次回答”变成了“整条轨迹”。",
+    body: "SWE-agent 把界面做成专用命令。OpenHands 换成事件流和 Docker 沙箱，CodeActAgent 用工具调用跑 bash、Python 和编辑器。后面的训练学的就是这种可回放的多轮轨迹，而不再是单次回答。",
   },
   {
     title: "数据：从“人工标注”到“自己生成”",

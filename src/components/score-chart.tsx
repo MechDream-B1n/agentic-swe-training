@@ -41,7 +41,7 @@ export function ScoreChart() {
       </div>
       <div className="mt-5 grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
         <p className="rounded-lg bg-muted/50 p-3">
-          SWE-agent 当时还没有 Verified 子集：它在完整 SWE-bench 上是 12.47%（GPT-4 Turbo）。CodeAct 没有在 SWE-bench 上评测。
+          SWE-agent 当时还没有 Verified 子集：它在完整 SWE-bench 上是 12.47%（GPT-4 Turbo）。OpenHands 论文报告的是 SWE-bench Lite：CodeActAgent v1.8 加 Claude 3.5 Sonnet 为 26%（无 hint），没有放进这张 Verified 图。
         </p>
         <p className="rounded-lg bg-muted/50 p-3">
           Self-play SWE-RL 报告的是相对基座 CWM-sft 的自我提升：Verified +10.4、SWE-Bench Pro +7.8，并且在整个训练过程中都优于使用人类数据的 RL 基线。

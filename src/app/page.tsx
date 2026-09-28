@@ -5,7 +5,7 @@ import { ScoreChart } from "@/components/score-chart"
 import { StageSection, Callout } from "@/components/stage-section"
 import { Summary } from "@/components/summary"
 import { AciDiagram } from "@/components/diagrams/aci-diagram"
-import { CodeActDiagram } from "@/components/diagrams/codeact-diagram"
+import { OpenHandsDiagram } from "@/components/diagrams/openhands-diagram"
 import { SweGymDiagram } from "@/components/diagrams/swegym-diagram"
 import { SweGymCompare, SweGymMethod } from "@/components/diagrams/swegym-notes"
 import { SweGymInference } from "@/components/diagrams/swegym-inference"
@@ -47,8 +47,8 @@ export default function Home() {
         <StageSection stage={stageById["swe-agent"]}>
           <AciDiagram />
         </StageSection>
-        <StageSection stage={stageById["codeact"]}>
-          <CodeActDiagram />
+        <StageSection stage={stageById["openhands"]}>
+          <OpenHandsDiagram />
         </StageSection>
         <StageSection stage={stageById["swe-gym"]}>
           <div className="flex flex-col gap-6">
