@@ -15,7 +15,7 @@
 | SWE-smith / R2E-Gym | 四类造 bug 策略、环境存储对比、混合验证器权重滑块 |
 | SWE-RL | 在线计算相似度奖励（TypeScript 复刻的 `difflib.SequenceMatcher`） |
 | DeepSWE | RL 循环图，以及切换 Compact Filtering / LOO / 标准差归一化时优势值的变化 |
-| Self-play SWE-RL | 一轮自博弈的分步图，以及注入者奖励曲线（可调 α 和解决率 s） |
+| Self-play SWE-RL | 一轮自博弈的分步图、注入者奖励曲线，以及 CWM 那套分组更新（优势、掩码、截断） |
 
 另外还有范式地图（学习信号 × 任务来源）、横向对比表、SWE-bench Verified 成绩图和术语表。
 

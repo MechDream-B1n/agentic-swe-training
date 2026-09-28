@@ -17,6 +17,7 @@ import { SweRlDiagram } from "@/components/diagrams/swerl-diagram"
 import { SweRlTrain } from "@/components/diagrams/swerl-train"
 import { DeepSweDiagram } from "@/components/diagrams/deepswe-diagram"
 import { SelfPlayDiagram } from "@/components/diagrams/selfplay-diagram"
+import { CwmUpdate } from "@/components/diagrams/cwm-update"
 import { stageById } from "@/lib/stages"
 
 export default function Home() {
@@ -91,7 +92,10 @@ export default function Home() {
           <DeepSweDiagram />
         </StageSection>
         <StageSection stage={stageById["ssr"]}>
-          <SelfPlayDiagram />
+          <div className="flex flex-col gap-6">
+            <SelfPlayDiagram />
+            <CwmUpdate />
+          </div>
         </StageSection>
 
         <Summary />
