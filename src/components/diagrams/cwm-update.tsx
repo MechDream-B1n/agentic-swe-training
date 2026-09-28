@@ -12,7 +12,7 @@ const steps = [
   },
   {
     t: "结束时打分",
-    d: "每条轨迹结束时得到一个回报。软件工程：隐藏测试全过是 1；没过、但和 oracle 补丁的相似度高于 0.5 是 0；否则是 −1。竞赛编程和数学是对为 +1、错为 −1。Self-play 沿用同一种更新，只把这个回报换成注入者和修复者的标量。",
+    d: "每条轨迹结束时只有一个回报，两种角色不会加在同一条上。注入者的轨迹拿到由解决率 s 算出的那个标量；每一次修复尝试是另一条轨迹，通过为 +1，否则为 −1。CWM 自己的软件工程任务则是：隐藏测试全过为 1，没过但补丁相似度高于 0.5 为 0，否则为 −1。",
   },
   {
     t: "算优势",
@@ -140,7 +140,7 @@ export function CwmUpdate() {
           <div className="rounded-xl border border-dashed p-4 text-xs leading-relaxed text-muted-foreground">
             <div className="font-mono text-[11px] text-foreground">Â = R − μ，ρ 限制在 [0.8, 1.25]</div>
             <p className="mt-2">
-              CWM 的联合训练大约 40% 软件工程、40% 竞赛编程、20% 数学，另有约三分之一的 batch 用旧监督数据复习。Self-play 只保留这套更新，任务改成注入者和修复者。
+              CWM 的联合训练大约 40% 软件工程、40% 竞赛编程、20% 数学，另有约三分之一的 batch 用旧监督数据复习。Self-play 里，注入轨迹和修复轨迹分开打分，梯度写进同一套权重。
             </p>
           </div>
         </div>
