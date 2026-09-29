@@ -34,6 +34,12 @@ export function SiteNav() {
         <a href="#top" className="shrink-0 text-sm font-bold tracking-tight">
           Agentic SWE 训练范式
         </a>
+        <Link
+          href="/benchmarks"
+          className="shrink-0 rounded-full bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-sky-700"
+        >
+          两份 Benchmark
+        </Link>
         <nav className="no-scrollbar -mx-2 flex min-w-0 flex-1 gap-1 overflow-x-auto px-2">
           {stages.map((s) => (
             <span key={s.id} className="contents">
@@ -60,12 +66,6 @@ export function SiteNav() {
               )}
             </span>
           ))}
-          <Link
-            href="/benchmarks"
-            className="shrink-0 rounded-full px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
-          >
-            考试
-          </Link>
           <a
             href="#summary"
             className={cn(

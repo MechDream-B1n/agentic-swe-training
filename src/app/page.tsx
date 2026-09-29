@@ -36,6 +36,17 @@ export default function Home() {
           <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             这条路线以 SWE-bench 式任务（给一个真实仓库和一个问题，让模型提交补丁）为主线，回答三个问题：agent 怎样和环境交互？训练任务从哪里来？学习信号是什么？每一章都配有可以动手操作的图示。
           </p>
+          <Link
+            href="/benchmarks"
+            className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-sky-300 bg-sky-50 px-4 py-4 shadow-sm transition-colors hover:bg-sky-100 sm:px-5"
+          >
+            <span>
+              <span className="text-xs font-semibold tracking-wide text-sky-700">考试怎么出题、怎么判分</span>
+              <span className="mt-1 block text-lg font-bold tracking-tight text-sky-950">两份 Benchmark</span>
+              <span className="mt-1 block text-sm leading-relaxed text-sky-900/80">SWE-bench 收一份补丁。Terminal-Bench 收一台改完的机器。字段、教学例和打分步骤都在这里。</span>
+            </span>
+            <span className="shrink-0 rounded-full bg-sky-600 px-3 py-1.5 text-sm font-medium text-white">进入</span>
+          </Link>
           <div className="mt-8">
             <LineageMap />
           </div>
@@ -44,7 +55,7 @@ export default function Home() {
           </div>
           <div className="mt-6">
             <Callout>
-              <b>阅读建议：</b>先看上面的范式地图，建立“横轴是学习信号、纵轴是任务来源”的直觉；然后逐章阅读，每章末尾的“局限”就是下一章的出发点。这些方法最后交到的考试写在 <Link className="font-medium text-foreground underline-offset-2 hover:underline" href="/benchmarks">两份 Benchmark</Link>：SWE-bench 收补丁，Terminal-Bench 收一台改完的机器。
+              <b>阅读建议：</b>先看上面的范式地图，建立“横轴是学习信号、纵轴是任务来源”的直觉；然后逐章阅读，每章末尾的“局限”就是下一章的出发点。
             </Callout>
           </div>
         </section>
