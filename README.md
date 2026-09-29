@@ -19,6 +19,8 @@
 
 另外还有范式地图（学习信号 × 任务来源）、横向对比表、SWE-bench Verified 成绩图和术语表。
 
+考试怎么出题、模型解题时能看见什么、评测程序怎样判对，写在 [两份 Benchmark](http://localhost:43127/benchmarks)：SWE-bench 与 Terminal-Bench。更长的提纲在 `docs/coding-agent-benchmarks-outline.md`，其中 Terminal-Bench 2、LiveCodeBench 等章节还没有做成交互页。
+
 ## 本地运行
 
 需要 Node.js 20 或更高版本。

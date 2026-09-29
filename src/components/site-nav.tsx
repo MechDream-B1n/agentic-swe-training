@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { stages } from "@/lib/stages"
 import { cn } from "@/lib/utils"
 
@@ -59,6 +60,12 @@ export function SiteNav() {
               )}
             </span>
           ))}
+          <Link
+            href="/benchmarks"
+            className="shrink-0 rounded-full px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted"
+          >
+            考试
+          </Link>
           <a
             href="#summary"
             className={cn(

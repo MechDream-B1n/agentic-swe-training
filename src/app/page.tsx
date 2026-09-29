@@ -19,6 +19,7 @@ import { DeepSweDiagram } from "@/components/diagrams/deepswe-diagram"
 import { SelfPlayDiagram } from "@/components/diagrams/selfplay-diagram"
 import { CwmUpdate } from "@/components/diagrams/cwm-update"
 import { stageById } from "@/lib/stages"
+import Link from "next/link"
 
 export default function Home() {
   return (
@@ -43,7 +44,7 @@ export default function Home() {
           </div>
           <div className="mt-6">
             <Callout>
-              <b>阅读建议：</b>先看上面的范式地图，建立“横轴是学习信号、纵轴是任务来源”的直觉；然后逐章阅读，每章末尾的“局限”就是下一章的出发点；最后在总结部分用对比表把七步串起来。
+              <b>阅读建议：</b>先看上面的范式地图，建立“横轴是学习信号、纵轴是任务来源”的直觉；然后逐章阅读，每章末尾的“局限”就是下一章的出发点。这些方法最后交到的考试写在 <Link className="font-medium text-foreground underline-offset-2 hover:underline" href="/benchmarks">两份 Benchmark</Link>：SWE-bench 收补丁，Terminal-Bench 收一台改完的机器。
             </Callout>
           </div>
         </section>

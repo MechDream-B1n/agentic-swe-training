@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Agentic SWE 训练范式：从 SWE-agent 到 Self-play SWE-RL",
   description:
-    "图解软件工程 Agent 的训练范式演进：SWE-agent、OpenHands CodeActAgent、SWE-Gym、SWE-smith / R2E-Gym、SWE-RL、DeepSWE、Self-play SWE-RL。",
+    "图解软件工程 Agent 的训练范式，以及 SWE-bench 与 Terminal-Bench 怎样出题、交卷和打分。",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
